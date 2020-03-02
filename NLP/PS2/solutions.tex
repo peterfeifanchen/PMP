@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+
+\usepackage[strings]{underscore}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\usepackage{geometry}
+\usepackage{placeins}
+
+\geometry{a4paper, portrait, margin=1in}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\begin{document}
+
+\section*{Question 1.1 Bigram HMM}
+
+\bigskip
+
+In the bigram  HMM model, we handled OOV symbols in the emission model by classifying it based on its word form into \textit{MENTION}, \textit{HASHTAG}, \textit{URL}, \textit{ALLCAP}, \textit{CAPFIRST}, \textit{NUMBER}, \textit{EMOJI} and if not any, as \textit{UNK}. The cut-off for what counts as OOV was configurable, although 5 seems to have been a reasonable number. 
+
+\bigskip
+
+We used linear interpolation on the transition model for smoothing and add-K smoothing for the emission model and prior models. 
+
+\bigskip
+
+From looking at the confusion matrix generated, it seems the greatest source of mistakes were classifications between proper nouns and common nouns, verbs mistaken as proper nouns and between common nouns and verbs. This is most likely due to the treatment of capital letters as part of the word form. This could be explored more, but I am lazy. But the hunch is supported by the fact that if we moved more of the emission symbols into OOV by raising the cut-off, we ended up with more errors in the confusion matrix for those tags. This makes sense as more of the emission symbols were replaced with our word forms.  
+
+\bigskip
+
+We tested on different hyper-parameters for the smoothing models and cut-off for OOV (See Table~\ref{tbl:hmm2}. Using the best dev model for $OOV cutoff > 1$ for test resulted in an accuracy of $94.20\%$. If we were to use the best dev model ($OOV cutof == 1$),  the accuracy was only $90.50\%$.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{l|c|c|c|c|}
+		\textbf{Interpolation (bigram, unigram)} & \textbf{Add-K (prior, emission)} & \textbf{OOV cutoff} & \textbf{Accuracy} \\
+		\hline
+		0.98 0.02 & 0.1 0.1 & 10 & 90.49\% \\
+		0.98 0.02 & 0.1 0.1 & 5 & 92.05\% \\
+		0.90 0.10 & 0.1 0.1 & 5 & 92.13\%  \\
+		0.98 0.02 & 0.05 0.05 & 5 & 92.16\% \\
+		0.98 0.02 & 0.05 0.05 & 4 & 92.65\% \\
+		0.98 0.02 & 0.05 0.05 & 3 & 93.29\% \\
+		0.90 0.10 & 0.1 0.1 & 2 & 94.06\% \\
+		0.98 0.02 & 0.05 0.05 & 2 & 94.21\% \\
+		0.99 0.01 & 0.05 0.05 & 2 & 94.20\% \\
+		0.99 0.01 & 0.05 0.05 & 1 & 95.70\%\\
+		\end{tabular}\
+		\caption{Bigram HMM Tagger Accuracy}
+		\label{tbl:hmm2}
+	\end{center}
+\end{table}
+
+
+\section*{Question 1.2 Trigram HMM}
+
+\section*{Question 2 Probabilistic Context Free Grammars}
+
+
+\bibliographystyle{abbrv}
+\bibliography{solutions}
+
+\end{document}
