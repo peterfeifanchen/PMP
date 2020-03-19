@@ -212,7 +212,7 @@ if __name__ == "__main__":
 	else:
 		print("Running on test")
 		test_data = [ json.loads( line ) for line in open_file( "twt.test.json" ) ] 
-	test_data = handle_lowfreq_words( vocab )( tagged_data )
+	test_data = handle_lowfreq_words( vocab )( test_data )
 	twitter_model = hmm.HiddenMarkovModelTagger( symbols=hmm_model.symbols,
 		states=tagset, transitions=transition_model, outputs=emission_model,
 		priors=init_model )

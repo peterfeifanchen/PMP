@@ -29,33 +29,81 @@ From looking at the confusion matrix generated, it seems the greatest source of 
 
 \bigskip
 
-We tested on different hyper-parameters for the smoothing models and cut-off for OOV (See Table~\ref{tbl:hmm2}. Using the best dev model for $OOV cutoff > 1$ for test resulted in an accuracy of $94.20\%$. If we were to use the best dev model ($OOV cutof == 1$),  the accuracy was only $90.50\%$.
+We tested on different hyper-parameters for the smoothing models and cut-off for OOV (See Table~\ref{tbl:hmm2}. The best results were with \textit{./hmm2 -oov 2 -a1 0.85 -a2 0.15 -ge 0.05 -gp 0.05 -test} for an accuracy of $92.94\%$.
 
 \begin{table}
 	\begin{center}
 		\begin{tabular}{l|c|c|c|c|}
-		\textbf{Interpolation (bigram, unigram)} & \textbf{Add-K (prior, emission)} & \textbf{OOV cutoff} & \textbf{Accuracy} \\
+		\textbf{Interpolation} & \textbf{Add-K (prior, emission)} & \textbf{OOV cutoff} & \textbf{Accuracy} \\
 		\hline
-		0.98 0.02 & 0.1 0.1 & 10 & 90.49\% \\
-		0.98 0.02 & 0.1 0.1 & 5 & 92.05\% \\
-		0.90 0.10 & 0.1 0.1 & 5 & 92.13\%  \\
-		0.98 0.02 & 0.05 0.05 & 5 & 92.16\% \\
-		0.98 0.02 & 0.05 0.05 & 4 & 92.65\% \\
-		0.98 0.02 & 0.05 0.05 & 3 & 93.29\% \\
-		0.90 0.10 & 0.1 0.1 & 2 & 94.06\% \\
-		0.98 0.02 & 0.05 0.05 & 2 & 94.21\% \\
-		0.99 0.01 & 0.05 0.05 & 2 & 94.20\% \\
-		0.99 0.01 & 0.05 0.05 & 1 & 95.70\%\\
+		0.90 0.10 & 0.1 0.1 & 10 & 90.19\% \\
+		0.90 0.10 & 0.05 0.5 & 5 & 91.59\% \\
+		0.90 0.10 & 0.1 0.1 & 5 & 91.54\% \\
+		0.85 0.15 & 0.05 0.05 & 2 & 92.89\% \\
+		0.90 0.10 & 0.05 0.05 & 2 & 92.88\% \\
+		0.95 0.05 & 0.05 0.05 & 2 & 92.81\% \\
+		0.99 0.01 & 0.05 0.05 & 2 & 92.78\%
 		\end{tabular}\
 		\caption{Bigram HMM Tagger Accuracy}
 		\label{tbl:hmm2}
 	\end{center}
 \end{table}
 
-
 \section*{Question 1.2 Trigram HMM}
 
+The trigram joint probability model is:
+\begin{align}
+	\begin{split}
+		p(x,y) = q(y_0)e(x_0|y_0)q(y_1|y_0)e(x_1|y_1)\prod_{i=2}^{n}q(y_i|y_{i-1},y_{i-2})e(x_i|y_i)
+	\end{split}
+\end{align}
+The trigram Viterbi decoding recursion is (here we move to use log probability):
+\begin{align}
+	\begin{split}
+		\pi(i, y_i, y_{i-1}) = \argmax_{y_{i-2} \in Y} (\pi(i-1, y_{i-1}, y_{i-2}) + q(y_i|y_{i-1},y_{i-2})) + e(x_i|y_i)
+	\end{split}
+\end{align}
+We handled OOV vocabulary in the same way as in the bigram model. The only addition is another interpolation parameter for the trigram and far slower training as the Viterbi algorithm is now $O(N^4*M)$. 
+
+We tried a bunch of hyperparameter choices, of which the best results were with \textit{./hmm3 -oov 2 -a1 0.60 -a2 0.30 -a3 0.10 -ge 0.05 -gp 0.05 -test} for an accuracy of $93.01\%$. The full table of results can be found in Table~\ref{tbl:hmm3}.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{l|c|c|c|c|}
+		\textbf{Interpolation} & \textbf{Add-K (prior, emission)} & \textbf{OOV cutoff} & \textbf{Accuracy} \\
+		\hline
+		0.60 0.30 0.10 & 0.05 0.05 & 2 & 92.96\% \\
+		0.75 0.20 0.05 & 0.05 0.05 & 2 & 92.91\% \\
+		0.85 0.012 0.03 & 0.05 0.05 & 2 & 92.85\% \\
+		0.90 0.09 0.01 & 0.05 0.05 & 2 & 92.83\% \\
+		0.95 0.049 0.001 & 0.05 0.05 & 10 & 90.23\% \\
+		0.95 0.049 0.001 & 0.05 0.05 & 5 & 91.56\% \\
+		0.95 0.049 0.001 & 0.05 0.05 & 2 & 92.78\% \\
+		0.95 0.049 0.001 & 0.1 0.1 & 10 & 90.18\% \\
+		0.95 0.049 0.001 & 0.2 0.2 & 10 & 90.07\% \\
+		0.97 0.029 0.001 & 0.05 0.05 & 2 & 92.77\% \\
+		0.99 0.009 0.001 & 0.05 0.05 & 2 &  92.77\%
+		\end{tabular}\
+		\caption{Bigram HMM Tagger Accuracy}
+		\label{tbl:hmm3}
+	\end{center}
+\end{table}
+
 \section*{Question 2 Probabilistic Context Free Grammars}
+
+This is answers to both part (1) and part (2). SInce the probability distribution is the same and the only way to create a non-terminal X is via the rule $X \rightarrow Y$.  We have $2^k$ non-terminals with probability $\frac{1}{2|\Sigma|}$.
+The probability of a sentence $p(w)=\frac{1}{|\Sigma|^M}$. The probability of $p(t|w)$ is the probability of max probability parse tree given a sentence of terminals with uniform distribution. No matter how this tree is parsed, as long as M is $2^k$,
+then the production rule $X \rightarrow X X$ is used $2^k-1$ times and the nonterminals with probability $\frac{1}{2|\Sigma|}$ are used $2^k=M$ times. Therefore
+
+\begin{align}
+	\begin{split}
+		p(w) &= \frac{1}{|\Sigma|^M} \\
+		p(t|w) &= \frac{1}{2}^{M-1}\frac{1}{2|\Sigma|}^M \\
+			&= \frac{1}{2}^{2M-1}\frac{1}{|\Sigma|}^M  \\
+		p(t,w) &= p(t|w)p(w) \\
+			&= \frac{1}{2}^{2M-1}\frac{1}{|\Sigma|}^{M+1}
+	\end{split}
+\end{align} 
 
 
 \bibliographystyle{abbrv}
