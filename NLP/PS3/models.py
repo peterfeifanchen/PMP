@@ -306,16 +306,22 @@ class MyNNClassifier(FNNClassifier):
         #    + add num_layers
         #    + hidden_size
         #    + batch to provide stability
-        raise NotImplementedError('Your code here')
+        #    - hidden layer size to reduce overfitting
+        self.rnn = nn.LSTM(input_size=300, hidden_size=5, num_layers=2, batch_first=True,
+             dropout=0.6, bidirectional=True)
+        self.linear = nn.Linear(10,1)
+        self.sigmoid = nn.Sigmoid()
 
         # End of your code
         self.optim = torch.optim.Adam(self.parameters(), args.learning_rate)
 
     def forward(self, feat):
         feat = feat.unsqueeze(0)
-
-        raise NotImplementedError('Your code here')
-
+        out, _ = self.rnn(feat) # batch x seq x (hidden_size*num_directions)
+        out = out.max(1)[0] # ( max, indices )
+        out = self.linear(out)
+        out = self.sigmoid(out)
+        return out
 
 def train_model(args, train_exs: List[SentimentExample], dev_exs: List[SentimentExample]) -> SentimentClassifier:
     """
