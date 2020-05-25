@@ -50,7 +50,7 @@ perplexity do fall although slower over time. See Figure~\ref{fig:ppl}. It seems
 
 \bigskip
 
-\noindent The translation of the dev set from english to french has a BLEU score of 39.32.
+\noindent The translation of the dev set from english to french has a BLEU score of 39.32 (higher the better).
 The quality of the translation is rather poor, but the fluency seems to be okay on the dev set.
 There seems to be significant errors for words that have been Byte Pair Encoded (BPE .e.g., @@ words).
 
@@ -58,18 +58,15 @@ There seems to be significant errors for words that have been Byte Pair Encoded 
 
 \subsection*{Part 1}
 
-The BLEU score with different decoder (128) and encoder (64) hidden layer sizes is 34.17. It is an improvement over a smaller decoder hidden size
-and even appears to be getting some of the @@ Byte Pair Encoded words correct.
+The BLEU score with different decoder (128) and encoder (64) hidden layer sizes is 34.17.
 
 \subsection*{Part 2}
 
-The BLEU score for additive attention is 42.00. This kind of makes sense this is the worst since according to the paper referenced in the assignment,
-this is kind of a soft localized attention. 
+The BLEU score for additive attention is 42.00.
 
 \bigskip
 
-\noindent The BLEU score for dot-product attention is 38.89. It seems to be worse, but it does save that projection parameter since it is just a
-dot product.
+\noindent The BLEU score for dot-product attention is 38.89.
 
 \subsection*{Part 3}
 

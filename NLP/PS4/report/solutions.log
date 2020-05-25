@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  24 MAY 2020 17:10
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  24 MAY 2020 18:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -429,22 +429,22 @@ File: pplfigure.png Graphic file (type bmp)
 <pplfigure.png>
 [1
 
-] [2]
-LaTeX Font Info:    Try loading font information for U+msa on input line 119.
+]
+LaTeX Font Info:    Try loading font information for U+msa on input line 116.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 119.
+LaTeX Font Info:    Try loading font information for U+msb on input line 116.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) [2]
 No file solutions.bbl.
 [3] (./solutions.aux) ) 
 Here is how much of TeX's memory you used:
  14444 strings out of 492916
  303593 string characters out of 6133346
- 393534 words of memory out of 5000000
+ 394534 words of memory out of 5000000
  18435 multiletter control sequences out of 15000+600000
  537042 words of font info for 49 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
